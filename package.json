@@ -5,11 +5,15 @@
   "dependencies": {
     "aframe": "^0.7.0",
     "aframe-chromakey-material": "^1.1.1",
+    "aframe-layout-component": "^4.3.0",
+    "aframe-particle-system-component": "^1.0.10",
     "aframe-react": "^4.3.0",
+    "aframe-text-geometry-component": "^0.5.1",
     "artyom.js": "^1.0.6",
     "pixabay-api": "^1.0.4",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react-dom": "^16.0.0",
+    "react-html5-fullscreen": "^0.0.2"
   },
   "devDependencies": {
     "react-scripts": "1.0.14"

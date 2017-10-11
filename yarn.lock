@@ -67,9 +67,21 @@ aframe-chromakey-material@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/aframe-chromakey-material/-/aframe-chromakey-material-1.1.1.tgz#1a536d3ac45869857e77170f2bc6e3992aed71ab"
 
+aframe-layout-component@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/aframe-layout-component/-/aframe-layout-component-4.3.0.tgz#103752e674eb31d09e3aaef0298a03e1219ef6b4"
+
+aframe-particle-system-component@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/aframe-particle-system-component/-/aframe-particle-system-component-1.0.10.tgz#dc2174072f4ef7d1757a1bfd3d86be4e8768bb30"
+
 aframe-react@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/aframe-react/-/aframe-react-4.3.0.tgz#43eba68be4a1e88830aac404e90ac033945fbf54"
+
+aframe-text-geometry-component@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/aframe-text-geometry-component/-/aframe-text-geometry-component-0.5.1.tgz#c5024e182aa96f548cd7fea6e53dd47b7f6f753a"
 
 aframe@^0.7.0:
   version "0.7.0"
@@ -5593,6 +5605,10 @@ react-error-overlay@^2.0.2:
     react-dom "^15 || ^16"
     settle-promise "1.0.0"
     source-map "0.5.6"
+
+react-html5-fullscreen@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-html5-fullscreen/-/react-html5-fullscreen-0.0.2.tgz#182e41cf5e75ff300a5c8b36b2ce2aa9bf834606"
 
 react-scripts@1.0.14:
   version "1.0.14"
