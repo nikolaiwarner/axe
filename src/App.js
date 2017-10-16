@@ -10,6 +10,12 @@ import './App.css'
 
 const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 const randomBool = () => !!randomInt(0, 1)
+const randomPhrase = (amount = 5) => {
+  let words = 'cats are taking over the entire planet someone please send cookies and they sure are noisy little guys wow'.split(' ')
+  return [...Array(amount)].map(() => {
+    return words[Math.floor(Math.random() * words.length)]
+  }).join(' ')
+}
 
 const SpeechToText = new Artyom()
 
@@ -21,8 +27,8 @@ class App extends Component {
       hitting: false,
       swinging: false,
       text: 'axe me anything',
-      text1: 'axe me ',
-      text2: 'anything'
+      text1: '       anything',
+      text2: 'axe me         '
     }
   }
 
@@ -38,6 +44,8 @@ class App extends Component {
     //   })
     // }, 2000)
 
+    this.fakeTalking()
+
     this.startVideo()
     this.startDictation()
     this.startQuietTimeline()
@@ -49,11 +57,19 @@ class App extends Component {
     console.log('axing: ', text)
     let text1 = text
     let text2 = ''
-    // if (text.length > 1) {
-    //   let middle = Math.floor(text.length / 2)
-    //   text1 = text.slice(0, middle)
-    //   text2 = text.slice(middle)
-    // }
+    if (text.length > 1) {
+      let middle = Math.floor(text.length / 2)
+      let numberOfSpaces = (text.length - 1) - middle
+
+      let spaces = [...Array(numberOfSpaces)].map(() => '_').join('')
+      text1 = text.slice(0, middle)
+      text1 = text1 + spaces
+      text2 = text.slice(middle)
+      text2 = spaces + text2
+
+      console.log(text1)
+      console.log(text2)
+    }
     if (!this.state.swinging && !this.state.hitting) {
       this.setState({
         text,
@@ -93,6 +109,13 @@ class App extends Component {
     }
   }
 
+  fakeTalking () {
+    setTimeout(() => {
+      this.onSomeoneSaysSomething(randomPhrase())
+      this.fakeTalking()
+    }, randomInt(2000, 10000))
+  }
+
   startVideo () {
     document.querySelectorAll('video').forEach((video) => { video.play() })
   }
@@ -123,7 +146,7 @@ class App extends Component {
 
   render () {
     return (
-      <div>
+      <div onClick={this.startVideo}>
         <Scene
           embedded
           vr-mode-ui='enabled: false'
@@ -132,21 +155,21 @@ class App extends Component {
           <a-assets>
             <a-asset-item id='optimerBoldFont' src='https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json' />
 
-            <img id='axeboy1' src='video/temp-face1.jpg' />
-            <img id='axeboy2' src='video/temp-face2.jpg' />
+            <img id='closeup1' src='video/temp-face1.jpg' />
+            <img id='wide1' src='video/temp-face2.jpg' />
 
             <video id='swing1' src='video/temp-swing2.mp4' autoPlay loop muted playsInline className={'video'} />
           </a-assets>
           <a-sky color='#00FF00' />
 
-          <Entity position={{x: 0, y: 0, z: 0}} rotation={{x: 0, y: 90, z: 0}}>
-            <Entity camera={{active: (this.state.currentCamera === 1)}} />
+          <Entity position={{x: -100, y: 0, z: 0}} rotation={{x: 0, y: 90, z: 0}}>
+            <Entity camera={{active: (this.state.currentCamera === 1)}} position={{x: 2, y: 2, z: 0}} />
             <Entity
-              name={'axeboy1'}
+              name={'closeup1'}
               geometry={{primitive: 'plane', width: 4, height: 8}}
               position={{x: 0, y: 2.5, z: -4}}
               rotation={{x: 0, y: 0, z: 0}}
-              material={{src: '#axeboy1'}}
+              material={{src: '#closeup1'}}
             />
             {this.state.hitting &&
               <Entity
@@ -157,21 +180,20 @@ class App extends Component {
             }
           </Entity>
 
-          <Entity position={{x: 0, y: 0, z: 0}} rotation={{x: 0, y: 180, z: 0}}>
-            <Entity camera={{active: (this.state.currentCamera === 2)}} />
+          <Entity position={{x: 200, y: 0, z: 0}} rotation={{x: 0, y: 180, z: 0}}>
+            <Entity camera={{active: (this.state.currentCamera === 2)}} position={{x: 2, y: 2, z: 0}} />
             <Entity
-              id={'axeboy2'}
-              name={'axeboy2'}
+              id={'wide1'}
+              name={'wide1'}
               geometry={{primitive: 'plane', width: 4, height: 8}}
               position={{x: 0, y: 2.5, z: -4}}
               rotation={{x: 0, y: 0, z: 0}}
-              material={{src: '#axeboy2'}}
+              material={{src: '#wide1'}}
             />
           </Entity>
 
-
-          <Entity camera={{active: (this.state.currentCamera === 3)}} position={{x: 0, y: 0, z: 0}} />
-          <Entity camera={{active: (this.state.currentCamera === 4)}} position={{x: 0, y: 0, z: -2}} rotation={{x: 0, y: 0, z: -20}} />
+          <Entity camera={{active: (this.state.currentCamera === 3)}} position={{x: -2, y: 0, z: -10}} />
+          <Entity camera={{active: (this.state.currentCamera === 4)}} position={{x: -2, y: 0, z: -13}} rotation={{x: 0, y: 0, z: -20}} />
           <Entity position={{x: -6, y: 2, z: -15}}>
             <Entity
               name={'axeboyswing1'}
@@ -202,7 +224,6 @@ class App extends Component {
               position={{x: 0, y: 0, z: 0}}
             />
           </Entity>
-
 
         </Scene>
         <div>[{this.state.text}]</div>
