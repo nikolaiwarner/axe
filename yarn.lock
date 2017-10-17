@@ -71,6 +71,10 @@ aframe-layout-component@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/aframe-layout-component/-/aframe-layout-component-4.3.0.tgz#103752e674eb31d09e3aaef0298a03e1219ef6b4"
 
+aframe-meshline-component@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/aframe-meshline-component/-/aframe-meshline-component-0.2.0.tgz#9742d2631e579382f16da76f1279d55544b2314b"
+
 aframe-particle-system-component@^1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/aframe-particle-system-component/-/aframe-particle-system-component-1.0.10.tgz#dc2174072f4ef7d1757a1bfd3d86be4e8768bb30"

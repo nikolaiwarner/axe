@@ -1,6 +1,7 @@
 import 'aframe'
 import 'aframe-chromakey-material'
 import 'aframe-layout-component'
+import 'aframe-meshline-component'
 import 'aframe-particle-system-component'
 import 'aframe-text-geometry-component'
 import {Entity, Scene} from 'aframe-react'
@@ -60,9 +61,7 @@ class App extends Component {
     //   })
     // }, 100)
 
-    // this.fakeTalking()
-
-    // this.backgroundColor()
+    this.fakeTalking()
 
     this.startVideo()
     this.startDictation()
@@ -107,6 +106,9 @@ class App extends Component {
         // Hit the target
         setTimeout(() => {
           this.setState({hitting: true, backgroundColor: randomColor()})
+
+          this.explode()
+
           // setTimeout(() => {
           //   this.setState({hitting: false})
           // }, randomInt(1000, 5000))
@@ -135,6 +137,18 @@ class App extends Component {
       this.setState({backgroundColor: randomColor()})
       this.backgroundColor()
     }, randomInt(5000, 20000))
+  }
+
+  explode () {
+    let lines = [...Array(randomInt(10, 30))].map(() => {
+      return {
+        lineWidth: randomInt(1, 60),
+        lineWidthStyler: '1 - p',
+        color: `rgb(${randomInt(200, 255)}, ${randomInt(200, 255)}, ${randomInt(200, 255)})`,
+        path: `0 0 0, 0 0 0, ${randomInt(-10, 10)} ${randomInt(-5, 5)} ${randomInt(-5, 5)}`
+      }
+    })
+    this.setState({lines})
   }
 
   fakeTalking () {
@@ -203,6 +217,8 @@ class App extends Component {
             <a-asset-item id='font9' src='https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/reeniebeanie/ReenieBeanie.json' />
             <a-asset-item id='font10' src='https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/sigmarone/SigmarOne-Regular.json' />
 
+            <img id='particle' src='video/particle.png' />
+
             <video id='close1' src='video/close1.mp4' autoPlay loop muted playsInline className={'video'} />
             <video id='swing1' src='video/swing1.mp4' autoPlay loop muted playsInline className={'video'} />
             <video id='wide1' src='video/wide1.mp4' autoPlay loop muted playsInline className={'video'} />
@@ -221,13 +237,6 @@ class App extends Component {
               rotation={{x: 0, y: 0, z: 0}}
               material={{shader: 'chromakey', src: '#close1', color: '0 1 0'}}
             />
-            {this.state.hitting &&
-              <Entity
-                position={{x: 0, y: -5, z: 0}}
-                particle-system
-                maxAge={2}
-              />
-            }
           </Entity>
 
           <Entity position={{x: 200, y: 0, z: 0}} rotation={{x: 0, y: 180, z: 0}}>
@@ -294,6 +303,37 @@ class App extends Component {
                   width: this.state.currentFontSize
                 }}
               />
+            </Entity>
+            <Entity position={{x: 0, y: -1.8, z: 0.5}}>
+              {!!this.state.hitting && !!this.state.lines && this.state.lines.map((line, index) => (
+                <Entity key={index} meshline={line} />
+              ))}
+              {!!this.state.hitting &&
+                <Entity
+                  position={{x: 0, y: 0, z: 0}}
+                  particle-system={{
+                    texture: './video/particle.png',
+                    maxAge: 10,
+                    velocityValue: '25 10 0',
+                    color: '#fff',
+                    size: 0.3,
+                    particleCount: 50
+                  }}
+                />
+              }
+              {!!this.state.hitting &&
+                <Entity
+                  position={{x: 0, y: 0, z: 0}}
+                  particle-system={{
+                    texture: './video/particle.png',
+                    maxAge: 10,
+                    velocityValue: '-25 10 0',
+                    color: '#fff',
+                    size: 0.3,
+                    particleCount: 50
+                  }}
+                />
+              }
             </Entity>
             <Entity
               name={'swing1'}
