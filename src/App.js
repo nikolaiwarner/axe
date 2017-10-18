@@ -56,7 +56,8 @@ class App extends Component {
   componentDidMount () {
     // setInterval(() => {
     //   this.setState({
-    //     currentCamera: 2
+    //     currentCamera: 2,
+    //     cameraTwoVideo: '#wide4'
     //   })
     // }, 100)
 
@@ -272,7 +273,7 @@ class App extends Component {
                 id={'wide4'}
                 name={'wide4'}
                 geometry={{primitive: 'plane', width: 4, height: 8}}
-                position={{x: 3, y: 3, z: -2.5}}
+                position={{x: 3, y: 3, z: -2.8}}
                 rotation={{x: 0, y: 0, z: 0}}
                 material={{shader: 'chromakey', src: '#wide4', color: '0 1 0'}}
               />
@@ -293,7 +294,6 @@ class App extends Component {
                   align: 'center',
                   color: this.state.currentColor,
                   font: this.state.currentFont,
-                  scale: {x: 4, y: 4, z: 4},
                   shader: 'msdf',
                   value: this.state.text1,
                   width: this.state.currentFontSize
@@ -325,7 +325,6 @@ class App extends Component {
                   align: 'center',
                   color: this.state.currentColor,
                   font: this.state.currentFont,
-                  scale: {x: 4, y: 4, z: 4},
                   shader: 'msdf',
                   value: this.state.text2,
                   width: this.state.currentFontSize
