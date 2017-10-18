@@ -54,7 +54,6 @@ class App extends Component {
   }
 
   componentDidMount () {
-
     // setInterval(() => {
     //   this.setState({
     //     currentCamera: 2
@@ -72,20 +71,18 @@ class App extends Component {
     console.log('said: ', text)
     if (text.length < 16) return
     console.log('axing: ', text)
+
     let text1 = text
     let text2 = ''
     if (text.length > 1) {
-      // let middle = Math.floor(text.length / 2)
-      // let numberOfSpaces = (text.length - 1) - middle
-      //
-      // let spaces = [...Array(numberOfSpaces)].map(() => '_').join('')
-      // text1 = text.slice(0, middle)
-      // text1 = text1 + spaces
-      // text2 = text.slice(middle)
-      // text2 = spaces + text2
+      let middle = Math.floor(text.length / 2)
+      let numberOfSpaces = (text.length - 1) - middle
 
-      // console.log(text1)
-      // console.log(text2)
+      let spaces = [...Array(numberOfSpaces)].map(() => ' ').join('')
+      text1 = text.slice(0, middle)
+      text1 = text1 + spaces
+      text2 = text.slice(middle)
+      text2 = spaces + text2
     }
     if (!this.state.swinging && !this.state.hitting) {
       this.resetAllVideos()
@@ -105,28 +102,20 @@ class App extends Component {
         }, randomInt(0, hitDelay))
         // Hit the target
         setTimeout(() => {
-          this.setState({hitting: true, backgroundColor: randomColor()})
-
+          this.setState({hitting: true})
           this.explode()
-
-          // setTimeout(() => {
-          //   this.setState({hitting: false})
-          // }, randomInt(1000, 5000))
-          // TODO: animate explosion ......
-
           // Possibly show alt camera angle
           if (randomBool()) {
             setTimeout(() => {
               this.setState({currentCamera: randomInt(3, 4)})
-            }, randomInt(0, 3000))
+            }, randomInt(0, 1000))
           }
-
           // Resume loop
           setTimeout(() => {
             this.setState({swinging: false, hitting: false}, () => {
               this.startQuietTimeline()
             })
-          }, randomInt(1000, 5000))
+          }, randomInt(1000, 3000))
         }, hitDelay)
       })
     }
@@ -142,13 +131,20 @@ class App extends Component {
   explode () {
     let lines = [...Array(randomInt(10, 30))].map(() => {
       return {
-        lineWidth: randomInt(1, 60),
+        lineWidth: randomInt(1, 100),
         lineWidthStyler: '1 - p',
         color: `rgb(${randomInt(200, 255)}, ${randomInt(200, 255)}, ${randomInt(200, 255)})`,
         path: `0 0 0, 0 0 0, ${randomInt(-10, 10)} ${randomInt(-5, 5)} ${randomInt(-5, 5)}`
       }
     })
-    this.setState({lines})
+    this.setState({
+      backgroundColor: randomColor(),
+      lines,
+      text1Position: `${randomInt(-10, -1)} ${randomInt(-2, 2)} ${randomInt(-1, 1)}`,
+      text1Rotation: `${randomInt(-45, 45)} ${randomInt(-45, 45)} ${randomInt(-45, 45)}`,
+      text2Position: `${randomInt(1, 10)} ${randomInt(-2, 2)} ${randomInt(-1, 1)}`,
+      text2Rotation: `${randomInt(-45, 45)} ${randomInt(-45, 45)} ${randomInt(-45, 45)}`
+    })
   }
 
   fakeTalking () {
@@ -276,7 +272,7 @@ class App extends Component {
                 id={'wide4'}
                 name={'wide4'}
                 geometry={{primitive: 'plane', width: 4, height: 8}}
-                position={{x: 6, y: 5.5, z: -8}}
+                position={{x: 3, y: 3, z: -2.5}}
                 rotation={{x: 0, y: 0, z: 0}}
                 material={{shader: 'chromakey', src: '#wide4', color: '0 1 0'}}
               />
@@ -302,9 +298,71 @@ class App extends Component {
                   value: this.state.text1,
                   width: this.state.currentFontSize
                 }}
-              />
+              >
+                {this.state.hitting &&
+                  <a-animation
+                    attribute='rotation'
+                    dur='2000'
+                    fill='forwards'
+                    from='0 0 0'
+                    to={this.state.text1Rotation}
+                    repeat='0'
+                  />
+                }
+                {this.state.hitting &&
+                  <a-animation
+                    attribute='position'
+                    dur='2000'
+                    fill='forwards'
+                    from='0 0 0'
+                    to={this.state.text1Position}
+                    repeat='0'
+                  />
+                }
+              </Entity>
+              <Entity
+                text={{
+                  align: 'center',
+                  color: this.state.currentColor,
+                  font: this.state.currentFont,
+                  scale: {x: 4, y: 4, z: 4},
+                  shader: 'msdf',
+                  value: this.state.text2,
+                  width: this.state.currentFontSize
+                }}
+              >
+                {this.state.hitting &&
+                  <a-animation
+                    attribute='rotation'
+                    dur='2000'
+                    fill='forwards'
+                    from='0 0 0'
+                    to={this.state.text2Rotation}
+                    repeat='0'
+                  />
+                }
+                {this.state.hitting &&
+                  <a-animation
+                    attribute='position'
+                    dur='2000'
+                    fill='forwards'
+                    from='0 0 0'
+                    to={this.state.text2Position}
+                    repeat='0'
+                  />
+                }
+              </Entity>
             </Entity>
             <Entity position={{x: 0, y: -1.8, z: 0.5}}>
+              {!!this.state.hitting &&
+                <a-animation
+                  attribute='rotation'
+                  dur='15000'
+                  from='0 0 0'
+                  to='-360 360 360'
+                  repeat='indefinite'
+                />
+              }
               {!!this.state.hitting && !!this.state.lines && this.state.lines.map((line, index) => (
                 <Entity key={index} meshline={line} />
               ))}
@@ -314,10 +372,10 @@ class App extends Component {
                   particle-system={{
                     texture: './video/particle.png',
                     maxAge: 10,
-                    velocityValue: '25 10 0',
+                    velocityValue: '50 10 0',
                     color: '#fff',
                     size: 0.3,
-                    particleCount: 50
+                    particleCount: 100
                   }}
                 />
               }
@@ -327,10 +385,10 @@ class App extends Component {
                   particle-system={{
                     texture: './video/particle.png',
                     maxAge: 10,
-                    velocityValue: '-25 10 0',
+                    velocityValue: '-50 10 0',
                     color: '#fff',
                     size: 0.3,
-                    particleCount: 50
+                    particleCount: 100
                   }}
                 />
               }
