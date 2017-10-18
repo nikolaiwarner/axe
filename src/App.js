@@ -60,7 +60,7 @@ class App extends Component {
     //   })
     // }, 100)
 
-    this.fakeTalking()
+    // this.fakeTalking()
 
     this.startVideo()
     this.startDictation()
