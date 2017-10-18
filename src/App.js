@@ -372,7 +372,7 @@ class App extends Component {
                   particle-system={{
                     texture: './video/particle.png',
                     maxAge: 10,
-                    velocityValue: '50 10 0',
+                    velocityValue: '30 10 0',
                     color: '#fff',
                     size: 0.3,
                     particleCount: 100
@@ -385,7 +385,7 @@ class App extends Component {
                   particle-system={{
                     texture: './video/particle.png',
                     maxAge: 10,
-                    velocityValue: '-50 10 0',
+                    velocityValue: '-30 10 0',
                     color: '#fff',
                     size: 0.3,
                     particleCount: 100
